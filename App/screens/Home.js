@@ -56,8 +56,7 @@ export default () => {
                 text='GBP'
                 value='123'
                 onButtonPress={() => alert('todo!')}
-                onChangeText={text => console.log('text: ', text)}
-                keyboardType='numeric'
+                editable={false}
             />
         </View>
     );
