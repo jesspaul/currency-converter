@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 
 import colors from '../constants/colors';
 import { ConversionInput } from '../components/ConversionInput';
+import { Button } from '../components/Button';
 
 const screen = Dimensions.get('window');
 
@@ -83,6 +84,8 @@ export default () => {
             <Text style={styles.text}>
                 {`1 ${baseCurrency} = ${conversionRate} ${quoteCurrency} as of ${format(date, 'MMMM do, yyyy')}.`}
             </Text>
+
+            <Button text='Reverse Currencies' onPress={() => alert('todo!')} />
         </View>
     );
 }
