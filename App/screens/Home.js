@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, StatusBar, Image, Dimensions, Text, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, StatusBar, Image, Dimensions, Text, ScrollView, Keyboard } from 'react-native';
 import { format } from 'date-fns';
 
 import colors from '../constants/colors';
@@ -50,9 +50,26 @@ export default () => {
     const conversionRate = 0.8345;
     const date = new Date();
 
+    const [scrollEnabled, setScrollEnabled] = useState(false);
+
+    useEffect(() => {
+        const showListener = Keyboard.addListener('keyboardDidShow', () => {
+            setScrollEnabled(true);
+        });
+
+        const hideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setScrollEnabled(false);
+        })
+
+        return () => {
+            showListener.remove();
+            hideListener.remove();
+        }
+    }, []);
+
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView scrollEnabled={scrollEnabled}>
                 {/* add line in app.json to remove translucent background from android status bar */}
                 <StatusBar barStyle='light-content' backgroundColor={colors.blue} />
                 <View style={styles.content}>
