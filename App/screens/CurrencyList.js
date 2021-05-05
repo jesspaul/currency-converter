@@ -29,13 +29,22 @@ export default ({ navigation, route = {} }) => {
                 data={currencies}
                 renderItem={({ item }) => {
                     const selected = params.activeCurrency === item;
-                    return <RowItem text={item} onPress={() => navigation.pop()} rightIcon={
-                        selected && (
-                            <View style={styles.icon}>
-                                <Entypo name='check' size={20} color={colors.white} />
-                            </View>
-                        )
-                    } />
+                    return (
+                        <RowItem
+                            text={item}
+                            onPress={() => {
+                                params.onChange && params.onChange(item);
+                                navigation.pop();
+                            }}
+                            rightIcon={
+                                selected && (
+                                    <View style={styles.icon}>
+                                        <Entypo name='check' size={20} color={colors.white} />
+                                    </View>
+                                )
+                            }
+                        />
+                    )
                 }}
                 keyExtractor={(item) => item}
                 ItemSeparatorComponent={() => <RowSeparator />}
