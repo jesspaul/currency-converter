@@ -12,6 +12,6 @@ This project was created following the tutorial from [React Native School](https
 * Connect to a local API with sample currency conversion rates - not accurate information
 
 ## Screenshots
-![main app screen](/App/assets/images/main.PNG)
-![currency selection screen](/App/assets/images/select.PNG)
-![loading screen](/App/assets/images/loading.PNG)
+<img src="./App/assets/images/main.PNG" width="250" />
+<img src="./App/assets/images/select.PNG" width="250" />
+<img src="./App/assets/images/loading.PNG" width="250" />
