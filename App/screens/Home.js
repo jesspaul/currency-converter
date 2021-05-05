@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet, StatusBar, Image, Dimensions, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, StatusBar, Image, Dimensions, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { format } from 'date-fns';
 import { Entypo } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 
 export default ({ navigation }) => {
     const [value, setValue] = useState('100');
-    const { baseCurrency, quoteCurrency, swapCurrencies, date, rates } = useContext(ConversionContext);
+    const { baseCurrency, quoteCurrency, swapCurrencies, date, rates, isLoading } = useContext(ConversionContext);
     const conversionRate = rates[quoteCurrency];
 
     const [scrollEnabled, setScrollEnabled] = useState(false);
@@ -87,33 +87,39 @@ export default ({ navigation }) => {
 
                     <Text style={styles.textHeader}>Currency Converter</Text>
 
-                    <ConversionInput
-                        text={baseCurrency}
-                        value={value}
-                        onButtonPress={() => 
-                            navigation.push('CurrencyList', {
-                                title: 'Base Currency',
-                                isBaseCurrency: true
-                            })}
-                        onChangeText={text => setValue(text)}
-                        keyboardType='numeric'
-                    />
-                    <ConversionInput
-                        text={quoteCurrency}
-                        value={value && `${(parseFloat(value) * conversionRate).toFixed(2)}`}
-                        onButtonPress={() => 
-                            navigation.push('CurrencyList', {
-                                title: 'Quote Currency',
-                                isBaseCurrency: false
-                            })}
-                        editable={false}
-                    />
-
-                    <Text style={styles.text}>
-                        {`1 ${baseCurrency} = ${conversionRate} ${quoteCurrency} as of ${date && format(new Date(date), 'MMMM do, yyyy')}.`}
-                    </Text>
-
-                    <Button text='Reverse Currencies' onPress={() => swapCurrencies()} />
+                    {isLoading ? (
+                        <ActivityIndicator color={colors.white} size='large' />
+                    ) : (
+                        <>
+                        <ConversionInput
+                            text={baseCurrency}
+                            value={value}
+                            onButtonPress={() => 
+                                navigation.push('CurrencyList', {
+                                    title: 'Base Currency',
+                                    isBaseCurrency: true
+                                })}
+                            onChangeText={text => setValue(text)}
+                            keyboardType='numeric'
+                        />
+                        <ConversionInput
+                            text={quoteCurrency}
+                            value={value && `${(parseFloat(value) * conversionRate).toFixed(2)}`}
+                            onButtonPress={() => 
+                                navigation.push('CurrencyList', {
+                                    title: 'Quote Currency',
+                                    isBaseCurrency: false
+                                })}
+                            editable={false}
+                        />
+    
+                        <Text style={styles.text}>
+                            {`1 ${baseCurrency} = ${conversionRate} ${quoteCurrency} as of ${date && format(new Date(date), 'MMMM do, yyyy')}.`}
+                        </Text>
+    
+                        <Button text='Reverse Currencies' onPress={() => swapCurrencies()} />
+                        </>
+                    )}
 
                     <KeyboardSpacer onToggle={keyboardIsVisible => setScrollEnabled(keyboardIsVisible) } />
                 </View>

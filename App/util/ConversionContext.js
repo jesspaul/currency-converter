@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 import { api } from './api';
 export const ConversionContext = createContext();
 
@@ -10,8 +11,10 @@ export const ConversionContextProvider = ({ children }) => {
     const [quoteCurrency, setQuoteCurrency] = useState(DEFAULT_QUOTE_CURRENCY);
     const [date, setDate] = useState();
     const [rates, setRates] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
     const setBaseCurrency = currency => {
+        setIsLoading(true);
         return api(`/latest?base=${currency}`)
             .then(response => {
                 console.log(response);
@@ -21,6 +24,10 @@ export const ConversionContextProvider = ({ children }) => {
             })
             .catch(error => {
                 console.log(error);
+                Alert.alert('Sorry, something went wrong!', error.message);
+            })
+            .finally(() => {
+                setIsLoading(false);
             })
     }
 
@@ -37,6 +44,7 @@ export const ConversionContextProvider = ({ children }) => {
         setQuoteCurrency,
         date,
         rates,
+        isLoading
     }
 
     useEffect(() => {
